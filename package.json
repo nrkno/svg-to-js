@@ -1,5 +1,5 @@
 {
-  "name": "svg-to",
+  "name": "@nrk/svg-to",
   "version": "0.0.1",
   "description": "Module for concatenating SVG files into JavaScript",
   "main": "index.js",

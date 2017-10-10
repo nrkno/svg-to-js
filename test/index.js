@@ -48,6 +48,6 @@ describe('svgToSymbol', () => {
 
 // Delete test files
 after(() => {
-  fs.unlink(path.join(__dirname, config.svgFileName))
-  fs.unlink(path.join(__dirname, config.svgFileNameMin))
+  fs.unlink(path.join(__dirname, config.svgFileName), (err) => err && console.error(err))
+  fs.unlink(path.join(__dirname, config.svgFileNameMin), (err) => err && console.error(err))
 })

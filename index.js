@@ -1,11 +1,11 @@
-const path = require('path');
-const fs = require('fs');
+const path = require('path')
+const fs = require('fs')
 
 const svgToSymbol = (file, xml) => String(xml) // Work with file as string
   .replace('>', ` id="${file.slice(0, -4)}">`) // Add filename as id
   .replace(/(<\/?)svg/gi, '$1symbol')          // Convert to symbols
   .replace(/\s*xmlns=[^\s>]+/gi, '')           // Remove xmlns
-  .replace(/\s*([<>])\s*/g, '$1');             // Strip white space around tokens
+  .replace(/\s*([<>])\s*/g, '$1')              // Strip white space around tokens
 
 module.exports = (config) => Promise
   .resolve(fs.readdirSync(config.srcPath).filter((file) => file.slice(-4) === '.svg'))
@@ -14,6 +14,7 @@ module.exports = (config) => Promise
   .then((svg) => `(function(el){el.innerHTML='${svg}';document.documentElement.lastElementChild.appendChild(el.firstElementChild)})(document.createElement('div'))`)
   .then((js) => `/*!${config.banner}*/\n${js}`)
   .then((js) => {
-    fs.writeFileSync(path.join(config.distPath, config.svgFileName), js);
-    fs.writeFileSync(path.join(config.distPath, config.svgFileNameMin), js);
-  });
+    fs.writeFileSync(path.join(config.distPath, config.svgFileName), js)
+    fs.writeFileSync(path.join(config.distPath, config.svgFileNameMin), js)
+    return js
+  })

@@ -1,8 +1,16 @@
 {
-  "name": "@nrk/svg-to-js",
+  "name": "svg-to-js",
   "version": "1.1.0",
   "description": "Module for concatenating SVG files into JavaScript",
   "main": "index.js",
+  "scripts": {
+    "publish:patch": "npm version patch -m 'Release patch %s' && npm run push",
+    "publish:minor": "npm version minor -m 'Release minor %s' && npm run push",
+    "publish:major": "npm version major -m 'Release major %s' && npm run push",
+    "push": "git push && git push --tags && npm publish",
+    "lint": "standard",
+    "test": "mocha"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nrkno/svg-to-js.git"
@@ -17,5 +25,10 @@
   "bugs": {
     "url": "https://github.com/nrkno/svg-to-js/issues"
   },
-  "homepage": "https://github.com/nrkno/svg-to-js#readme"
+  "homepage": "https://github.com/nrkno/svg-to-js#readme",
+  "devDependencies": {
+    "jsdom": "^11.3.0",
+    "mocha": "^4.0.1",
+    "standard": "^10.0.3"
+  }
 }

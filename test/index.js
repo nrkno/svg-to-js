@@ -1,6 +1,7 @@
 /* globals before, after, describe, it */
 const svgtojs = require('../index.js')
 const assert = require('assert')
+const jsdom = require('jsdom')
 const path = require('path')
 const fs = require('fs')
 
@@ -16,10 +17,10 @@ const config = {
   banner: 'Copyright'
 }
 
-// Generate test files
-before(() => svgtojs(config).then((js) => (result = js)))
-
 describe('svgToSymbol', () => {
+  // Generate test files
+  before(() => svgtojs(config).then((js) => (result = js)))
+
   it('should minify svg', () => {
     assert.equal(2, result.split('\n').length)
   })
@@ -27,27 +28,41 @@ describe('svgToSymbol', () => {
   it('should start with banner', () => {
     assert.equal(0, result.indexOf(`/*!${config.banner}*/`))
   })
+
   it('should contain svg ids', () => {
     assert.equal(true, result.indexOf(' id="nrk-bell"') > 0)
     assert.equal(true, result.indexOf(' id="nrk-close"') > 0)
   })
+
   it('should be wrapped in hidden svg', () => {
     assert.equal(true, result.indexOf('xmlns="http://www.w3.org/2000/svg"') > 0)
     assert.equal(true, result.indexOf(' style="display:none"') > 0)
   })
+
   it('should have only one, valid xmlns definition', () => {
     assert.equal(1, result.match(/xmlns="http:\/\/www.w3.org\/2000\/svg"/g).length)
   })
+
   it('should contain all symbols', () => {
     assert.equal(2, result.match(/<symbol/g).length)
   })
+
   it('should equal blueprint', () => {
     assert.equal(blueprint, result)
   })
-})
 
-// Delete test files
-after(() => {
-  fs.unlink(path.join(__dirname, config.svgFileName), (err) => err && console.error(err))
-  fs.unlink(path.join(__dirname, config.svgFileNameMin), (err) => err && console.error(err))
+  it('should append to document', () => {
+    const dom = new jsdom.JSDOM(`<!DOCTYPE html>${result}`)
+    const queryAll = (css) => Array.from(dom.window.document.querySelectorAll(css))
+
+    assert.equal(1, queryAll('#nrk-bell').length)
+    assert.equal(2, queryAll('symbol').length)
+    assert.equal(1, queryAll('svg').length)
+  })
+
+  // Delete test files
+  after(() => {
+    fs.unlink(path.join(__dirname, config.svgFileName), (err) => err && console.error(err))
+    fs.unlink(path.join(__dirname, config.svgFileNameMin), (err) => err && console.error(err))
+  })
 })

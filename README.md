@@ -7,7 +7,7 @@ SVG symbols are great for styling and accessibility, but can not load cross doma
 
 ## Usage
 ```
-const svgtojs = require('@nrk/svg-to-js');
+const svgtojs = require('svg-to-js');
 const options = {
   svgFileName: 'core-icons.js',                 // Name of js-widh-svgs-file to create
   svgFileNameMin: 'core-icons.min.js',          // Name of minified js-widh-svgs-file

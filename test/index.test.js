@@ -1,7 +1,7 @@
-/* globals before, after, describe, it */
+/* globals afterAll, beforeAll, expect, describe, it */
 const svgtojs = require('../index.js')
-const assert = require('assert')
-const jsdom = require('jsdom')
+// const assert = require('assert')
+// const jsdom = require('jsdom')
 const path = require('path')
 const fs = require('fs')
 
@@ -19,50 +19,48 @@ const config = {
 
 describe('svgToSymbol', () => {
   // Generate test files
-  before(() => svgtojs(config).then((js) => (result = js)))
+  beforeAll(() => svgtojs(config).then((js) => (result = js)))
+
+  // Delete test files
+  afterAll(() => {
+    fs.unlink(path.join(__dirname, config.svgFileName), (err) => err && console.error(err))
+    fs.unlink(path.join(__dirname, config.svgFileNameMin), (err) => err && console.error(err))
+  })
 
   it('should minify svg', () => {
-    assert.equal(2, result.split('\n').length)
+    expect(result.split('\n').length).toBe(2)
   })
 
   it('should start with banner', () => {
-    assert.equal(0, result.indexOf(`/*!${config.banner}*/`))
+    expect(result.indexOf(`/*!${config.banner}*/`)).toBe(0)
   })
 
   it('should contain svg ids', () => {
-    assert.equal(true, result.indexOf(' id="nrk-bell"') > 0)
-    assert.equal(true, result.indexOf(' id="nrk-close"') > 0)
+    expect(result.indexOf(' id="nrk-bell"') > 0).toBe(true)
+    expect(result.indexOf(' id="nrk-close"') > 0).toBe(true)
   })
 
   it('should be wrapped in hidden svg', () => {
-    assert.equal(true, result.indexOf('xmlns="http://www.w3.org/2000/svg"') > 0)
-    assert.equal(true, result.indexOf(' style="display:none"') > 0)
+    expect(result.indexOf('xmlns="http://www.w3.org/2000/svg"') > 0).toBe(true)
+    expect(result.indexOf(' style="display:none"') > 0).toBe(true)
   })
 
   it('should have only one, valid xmlns definition', () => {
-    assert.equal(1, result.match(/xmlns="http:\/\/www.w3.org\/2000\/svg"/g).length)
+    expect(result.match(/xmlns="http:\/\/www.w3.org\/2000\/svg"/g).length).toBe(1)
   })
 
   it('should contain all symbols', () => {
-    assert.equal(2, result.match(/<symbol/g).length)
+    expect(result.match(/<symbol/g).length).toBe(2)
   })
 
   it('should equal blueprint', () => {
-    assert.equal(blueprint, result)
+    expect(result).toBe(blueprint)
   })
 
   it('should append to document', () => {
-    const dom = new jsdom.JSDOM(`<!DOCTYPE html>${result}`)
-    const queryAll = (css) => Array.from(dom.window.document.querySelectorAll(css))
-
-    assert.equal(1, queryAll('#nrk-bell').length)
-    assert.equal(2, queryAll('symbol').length)
-    assert.equal(1, queryAll('svg').length)
-  })
-
-  // Delete test files
-  after(() => {
-    fs.unlink(path.join(__dirname, config.svgFileName), (err) => err && console.error(err))
-    fs.unlink(path.join(__dirname, config.svgFileNameMin), (err) => err && console.error(err))
+    document.body.innerHTML = result
+    expect(document.querySelectorAll('#nrk-bell').length).toBe(1)
+    expect(document.querySelectorAll('symbol').length).toBe(2)
+    expect(document.querySelectorAll('svg').length).toBe(1)
   })
 })

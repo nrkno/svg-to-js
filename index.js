@@ -3,9 +3,9 @@ const fs = require('fs')
 
 const svgToSymbol = (file, xml) => String(xml) // Work with file as string
   .replace('>', ` id="${file.slice(0, -4)}">`) // Add filename as id
-  .replace(/(<\/?)svg/gi, '$1symbol')          // Convert to symbols
-  .replace(/\s*xmlns=[^\s>]+/gi, '')           // Remove xmlns
-  .replace(/\s*([<>])\s*/g, '$1')              // Strip white space around tokens
+  .replace(/(<\/?)svg/gi, '$1symbol') // Convert to symbols
+  .replace(/\s*xmlns=[^\s>]+/gi, '') // Remove xmlns
+  .replace(/\s*([<>])\s*/g, '$1') // Strip white space around tokens
 
 module.exports = (config) => Promise
   .resolve(fs.readdirSync(config.srcPath).filter((file) => file.slice(-4) === '.svg'))

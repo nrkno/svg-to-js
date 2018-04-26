@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/nrkno/svg-to-js#readme",
   "devDependencies": {
-    "jsdom": "^11.3.0",
-    "mocha": "^4.0.1",
-    "standard": "^10.0.3"
+    "jsdom": "11.9.0",
+    "mocha": "5.1.1",
+    "standard": "11.0.1"
   }
 }

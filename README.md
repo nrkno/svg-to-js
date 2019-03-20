@@ -1,4 +1,4 @@
-# svg-to-js
+# svg-to-js  ![Build](https://api.travis-ci.org/nrkno/svg-to-js.svg?branch=master)
 Module for concatenating SVG files into JavaScript.
 
 ##### Why load icons as JavaScript?
@@ -20,11 +20,12 @@ const options = {
   iife: 'core-icons.min.js'   // Self executing <script>, exposing all icons as symbols on page
 }
 
-svgtojs(options) // => Returns {
-  esm: String,
-  cjs: String,
-  esmx: String,
-  cjsx: String,
-  iife: String
-}
+svgtojs(options)
+// => Returns {
+//  esm: String,
+//  cjs: String,
+//  esmx: String,
+//  cjsx: String,
+//  iife: String
+//}
 ```

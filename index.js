@@ -33,8 +33,12 @@ module.exports = function (config) {
     cjs: icons.map(({ camelCase, svg }) => `exports.${camelCase} = '${svg}'`).join('\n'),
     esm: icons.map(({ camelCase, svg }) => `export const ${camelCase} = '${svg}'`).join('\n'),
     cjsx: `const React = require('react')${icons.map(({ titleCase, jsx }) => `\nexports.${titleCase} = function () {${jsx}}`).join('')}`,
-    esmx: `import React from 'react'${icons.map(({ titleCase, jsx }) => `\nexport function ${titleCase} () {${jsx}}`).join('')}`
+    esmx: `import React from 'react'${icons.map(({ titleCase, jsx }) => `\nexport function ${titleCase} () {${jsx}}`).join('')}`,
+    dts: icons.map(({ camelCase }) => `export declare const ${camelCase}: string`).join('\n'),
+    dtsx: icons.map(({ titleCase }) => `export declare const ${titleCase}: React.FunctionComponent<React.SVGProps<SVGElement>>`).join('\n')
   }
+
+  console.log(result)
 
   // Save files if specified in config
   Object.keys(config).forEach((type) => {

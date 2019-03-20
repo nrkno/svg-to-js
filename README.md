@@ -17,7 +17,9 @@ const options = {
   cjs: 'core-icons.js',       // CommonJS for Node exposing `module.exports = { iconName: '<svg...' }`
   esmx 'core-icons.esm.jsx',  // JSX ES module, exposing React components with `export`
   cjsx: 'core-icons.cjs.jsx', // JSX CommonJS, exposing React components with `module.exports`
-  iife: 'core-icons.min.js'   // Self executing <script>, exposing all icons as symbols on page
+  iife: 'core-icons.min.js'   // Self executing <script>, exposing all icons as symbols on page,
+  dts: 'core-icons.d.ts',     // Exposes typescript definitions with `export declare const`
+  dtsx: 'core-icons-jsx.d.ts' // Exposes typescript definitions for JSX with `export declare const`
 }
 
 svgtojs(options)
@@ -26,6 +28,8 @@ svgtojs(options)
 //  cjs: String,
 //  esmx: String,
 //  cjsx: String,
-//  iife: String
+//  iife: String,
+//  dts: String,
+//  dtsx: String
 //}
 ```

@@ -38,8 +38,6 @@ module.exports = function (config) {
     dtsx: icons.map(({ titleCase }) => `export declare const ${titleCase}: React.FunctionComponent<React.SVGProps<SVGElement>>`).join('\n')
   }
 
-  console.log(result)
-
   // Save files if specified in config
   Object.keys(config).forEach((type) => {
     if (result[type]) fs.writeFileSync(config[type], result[type])

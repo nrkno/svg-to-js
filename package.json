@@ -8,8 +8,7 @@
     "publish:minor": "npm version minor -m 'Release minor %s' && npm run push",
     "publish:major": "npm version major -m 'Release major %s' && npm run push",
     "push": "git push && git push --tags && npm publish --access public",
-    "lint": "standard",
-    "test": "jest"
+    "test": "jest && standard -v"
   },
   "repository": {
     "type": "git",
@@ -20,14 +19,14 @@
     "JavaScript",
     "JS"
   ],
-  "author": "NRK",
+  "author": "NRK <opensource@nrk.no> (https://www.nrk.no/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nrkno/svg-to-js/issues"
   },
   "homepage": "https://github.com/nrkno/svg-to-js#readme",
   "devDependencies": {
-    "jest": "24.5.0",
+    "jest": "^24.8.0",
     "standard": "12.0.1"
   }
 }

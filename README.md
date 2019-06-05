@@ -1,12 +1,20 @@
-# svg-to-js  ![Build](https://api.travis-ci.org/nrkno/svg-to-js.svg?branch=master)
-Module for concatenating SVG files into JavaScript.
+# @nrk/svg-to-js
+> Module for concatenating SVG files into JavaScript.
 
 ##### Why load icons as JavaScript?
 SVG symbols are great for styling and accessibility, but can not load cross domain, or from external file and in IE (9,10,11). Javascript provides us a cacheable, cross-domain method load the icons, without adding extra overhead to each html-file.
 
-## Usage
+## Installation
+
+```sh
+npm install @nrk/svg-to-js
 ```
-const svgtojs = require('@nrk/svg-to-js')
+
+## Usage
+
+```js
+import svgtojs = from '@nrk/svg-to-js'
+
 const options = {
   input: 'src/'               // Required. Folder with SVG files
   banner: 'Copyright NRK',    // Optional. Text to add to top of file

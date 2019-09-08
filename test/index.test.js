@@ -15,7 +15,7 @@ describe('svgToSymbol', () => {
   })
 
   it('should start with banner', () => {
-    expect(result.iife.indexOf(`/*!Copyright*/`)).toBe(0)
+    expect(result.iife.indexOf('/*!Copyright*/')).toBe(0)
   })
 
   it('should contain svg ids', () => {

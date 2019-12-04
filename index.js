@@ -23,7 +23,7 @@ module.exports = function (config) {
         camelCase,
         titleCase,
         symbol: `<symbol viewBox="${size}" id="${name}">${body}</symbol>`,
-        svg: `<svg viewBox="${size}" width="${w}" height="${h}" aria-hidden="true" focusable="false">${body}</svg>`,
+        svg: `<svg viewBox="${size}" class="${name}" width="${w}" height="${h}" aria-hidden="true" focusable="false">${body}</svg>`,
         jsx: `return React.createElement('svg', {'aria-hidden': true, width: '${w}', height: '${h}', viewBox: '${size}', dangerouslySetInnerHTML: {__html: '${body}'}})`
       }
     })

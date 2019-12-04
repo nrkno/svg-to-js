@@ -9,38 +9,43 @@ const result = svgtojs({
   input: __dirname
 })
 
-describe('svgToSymbol', () => {
-  it('should minify svg', () => {
+describe('svg-to-js', () => {
+  it('iife should should be minified', () => {
     expect(result.iife.split('\n').length).toBe(2)
   })
 
-  it('should start with banner', () => {
+  it('iife should start with banner', () => {
     expect(result.iife.indexOf('/*!Copyright*/')).toBe(0)
   })
 
-  it('should contain svg ids', () => {
+  it('iife should contain svg ids', () => {
     expect(result.iife.indexOf(' id="nrk-bell"') > 0).toBe(true)
     expect(result.iife.indexOf(' id="nrk-close"') > 0).toBe(true)
   })
 
-  it('should be wrapped in hidden svg', () => {
+  it('exports should contain svg class', () => {
+    expect(result.esm.indexOf(' class="nrk-bell"') > 0).toBe(true)
+    expect(result.cjs.indexOf(' class="nrk-close"') > 0).toBe(true)
+  })
+
+  it('iife should be wrapped in hidden svg', () => {
     expect(result.iife.indexOf('xmlns="http://www.w3.org/2000/svg"') > 0).toBe(true)
     expect(result.iife.indexOf(' style="display:none"') > 0).toBe(true)
   })
 
-  it('should have only one, valid xmlns definition', () => {
+  it('iife should have only one, valid xmlns definition', () => {
     expect(result.iife.match(/xmlns="http:\/\/www.w3.org\/2000\/svg"/g).length).toBe(1)
   })
 
-  it('should contain all symbols', () => {
+  it('iife should contain all symbols', () => {
     expect(result.iife.match(/<symbol/g).length).toBe(2)
   })
 
-  it('should equal blueprint', () => {
+  it('iife should equal blueprint', () => {
     expect(result.iife).toBe(blueprint)
   })
 
-  it('should append to document', () => {
+  it('executing iife should append to document', () => {
     document.body.innerHTML = result.iife
     expect(document.querySelectorAll('#nrk-bell').length).toBe(1)
     expect(document.querySelectorAll('symbol').length).toBe(2)

@@ -29,7 +29,7 @@
     "publish:major": "npm version major -m 'Release major %s' && npm run push",
     "postversion": "npm run build && git push && git push --tags && npm publish --access public",
     "build": "rollup --config",
-    "test": "jest && standard -v"
+    "test": "npm run build && jest && standard -v"
   },
   "devDependencies": {
     "jest": "24.9.0",

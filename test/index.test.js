@@ -50,4 +50,8 @@ describe('svg-to-js', () => {
     expect(document.querySelectorAll('symbol').length).toBe(2)
     expect(document.querySelectorAll('svg').length).toBe(1)
   })
+
+  it('jsx should be ES5 compatible', () => {
+    expect(result.cjsx).not.toMatch(/(const|let)\s?=/)
+  })
 })

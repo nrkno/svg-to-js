@@ -12,7 +12,7 @@ const plugins = [
 export default [
   {
     input: 'lib/index.js', // CJS module
-    output: { file: 'lib/svg-to-js.cjs.js', format: 'cjs' },
+    output: { file: 'lib/svg-to-js.cjs.js', format: 'cjs', exports: 'default' },
     external,
     plugins
   },

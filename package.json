@@ -33,11 +33,11 @@
   },
   "devDependencies": {
     "@rollup/plugin-buble": "0.21.3",
-    "@rollup/plugin-commonjs": "20.0.0",
-    "@rollup/plugin-node-resolve": "13.0.4",
-    "jest": "27.0.6",
-    "rollup": "2.56.2",
-    "standard": "16.0.3"
+    "@rollup/plugin-commonjs": "21.0.1",
+    "@rollup/plugin-node-resolve": "13.0.6",
+    "jest": "27.4.3",
+    "rollup": "2.60.2",
+    "standard": "16.0.4"
   },
   "jest": {
     "testEnvironment": "jsdom"

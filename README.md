@@ -16,7 +16,7 @@ npm install @nrk/svg-to-js
 import svgtojs from '@nrk/svg-to-js'
 
 const options = {
-  input: 'src/'               // Required. Folder with SVG files
+  input: 'src/',               // Required. Folder with SVG files
   banner: 'Copyright NRK',    // Optional. Text to add as comment in top of file
   scale: 1,                   // Optional. Scale factor for width/height attributes in em
 
@@ -26,7 +26,7 @@ const options = {
   cjs: 'core-icons.js',       // CommonJS for Node exposing `module.exports = { iconName: '<svg...' }`
   esmx: 'core-icons.esm.jsx', // JSX ES module, exposing React components with `export`
   cjsx: 'core-icons.cjs.jsx', // JSX CommonJS, exposing React components with `module.exports`
-  iife: 'core-icons.min.js'   // Self executing <script>, exposing all icons as symbols on page,
+  iife: 'core-icons.min.js',   // Self executing <script>, exposing all icons as symbols on page,
   dts: 'core-icons.d.ts',     // Exposes typescript definitions with `export declare const`
   dtsx: 'core-icons-jsx.d.ts' // Exposes typescript definitions for JSX with `export declare const`
 }

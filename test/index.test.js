@@ -17,9 +17,7 @@ const extensions = [{
   },
   filename: 'test_1'
 }, {
-  header (banner) {
-    return `/** Banner: ${banner} **/`
-  },
+  includeBanner: true,
   parser ({ camelCase, svg, titleCase }) {
     return `exports.${camelCase} = {render() { return (${svg.replace('<svg', `<svg id="${titleCase}"`)});}}
     `.trim()
@@ -93,7 +91,7 @@ describe('svg-to-js', () => {
     expect(resultWithCustom.custom_1.split('\n').length).toBe(4)
   })
 
-  it('headers should include banner as expected', () => {
+  it('banners should be included when it is explicit', () => {
     expect(resultWithCustom.custom_1.includes(BANNER_TEXT)).toBe(false)
     expect(resultWithCustom.custom_2.includes(BANNER_TEXT)).toBe(true)
   })
@@ -102,5 +100,44 @@ describe('svg-to-js', () => {
     const customEntries = Object.keys(resultWithCustom).filter(key => key.startsWith('custom_'))
     const validExtensions = extensions.filter(item => item.filename && item.parser)
     expect(customEntries.length).toBe(validExtensions.length)
+  })
+
+  it('incomplete extensions should not be counted', () => {
+    const customEntries = Object.keys(resultWithCustom).filter(key => key.startsWith('custom_'))
+    const validExtensions = extensions.filter(item => item.filename && item.parser)
+    expect(customEntries.length).toBe(validExtensions.length)
+  })
+
+  it('includeBanners works as expected', () => {
+    const bannerExtensions = [{
+      includeBanner: false,
+      parser () { return '' },
+      filename: 'test_3'
+    }, {
+      includeBanner: true,
+      parser () { return '' },
+      filename: 'test_4'
+    }, {
+      parser () { return '' },
+      filename: 'test_5'
+    }]
+
+    const withBannerResult = svgtojs({
+      input: __dirname,
+      banner: BANNER_TEXT,
+      extensions: bannerExtensions
+    })
+    const noBannerResult = svgtojs({
+      input: __dirname,
+      extensions: bannerExtensions
+    })
+
+    expect(withBannerResult.custom_1.includes(BANNER_TEXT)).toBe(false)
+    expect(withBannerResult.custom_2.includes(BANNER_TEXT)).toBe(true)
+    expect(withBannerResult.custom_3.includes(BANNER_TEXT)).toBe(false)
+
+    expect(noBannerResult.custom_1.includes(BANNER_TEXT)).toBe(false)
+    expect(noBannerResult.custom_2.includes(BANNER_TEXT)).toBe(false)
+    expect(noBannerResult.custom_3.includes(BANNER_TEXT)).toBe(false)
   })
 })

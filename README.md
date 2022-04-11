@@ -76,6 +76,7 @@ const options = {
   input: __dirname
 }
 
+svgtojs(options)
 // => Returns {
 //  esm: String,
 //  cjs: String,

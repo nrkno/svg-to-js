@@ -73,7 +73,8 @@ const extensions = [{
 
 const options = {
   banner: '/** Copyright NRK **/',
-  input: __dirname
+  input: __dirname,
+  extensions: extensions
 }
 
 svgtojs(options)

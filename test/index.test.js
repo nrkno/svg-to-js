@@ -10,31 +10,6 @@ const result = svgtojs({
   input: __dirname
 })
 
-const extensions = [{
-  parser ({ camelCase, svg }) {
-    const path = svg.match(/path[^>]+d="([^"]+)"/)
-    return path ? `export const ${camelCase} = "${path[1]}";` : ''
-  },
-  filename: 'test_1'
-}, {
-  includeBanner: true,
-  parser ({ camelCase, svg, titleCase }) {
-    return `exports.${camelCase} = {render() { return (${svg.replace('<svg', `<svg id="${titleCase}"`)});}}
-    `.trim()
-  },
-  filename: 'test_2'
-}, {
-  parser () {
-    return ''
-  }
-}]
-
-const resultWithCustom = svgtojs({
-  input: __dirname,
-  banner: BANNER_TEXT,
-  extensions
-})
-
 describe('svg-to-js', () => {
   it('iife should should be minified', () => {
     expect(result.iife.split('\n').length).toBe(2)
@@ -80,6 +55,33 @@ describe('svg-to-js', () => {
 
   it('jsx should be ES5 compatible', () => {
     expect(result.cjsx).not.toMatch(/(const|let)\s?=/)
+  })
+})
+
+describe('Config: customOutputs', () => {
+  const extensions = [{
+    parser ({ camelCase, svg }) {
+      const path = svg.match(/path[^>]+d="([^"]+)"/)
+      return path ? `export const ${camelCase} = "${path[1]}";` : ''
+    },
+    filename: 'test_1'
+  }, {
+    includeBanner: true,
+    parser ({ camelCase, svg, titleCase }) {
+      return `exports.${camelCase} = {render() { return (${svg.replace('<svg', `<svg id="${titleCase}"`)});}}
+      `.trim()
+    },
+    filename: 'test_2'
+  }, {
+    parser () {
+      return ''
+    }
+  }]
+
+  const resultWithCustom = svgtojs({
+    input: __dirname,
+    banner: BANNER_TEXT,
+    extensions
   })
 
   it('no extensions creates no custom entries', () => {

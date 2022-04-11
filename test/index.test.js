@@ -102,12 +102,6 @@ describe('svg-to-js', () => {
     expect(customEntries.length).toBe(validExtensions.length)
   })
 
-  it('incomplete extensions should not be counted', () => {
-    const customEntries = Object.keys(resultWithCustom).filter(key => key.startsWith('custom_'))
-    const validExtensions = extensions.filter(item => item.filename && item.parser)
-    expect(customEntries.length).toBe(validExtensions.length)
-  })
-
   it('includeBanners works as expected', () => {
     const bannerExtensions = [{
       includeBanner: false,

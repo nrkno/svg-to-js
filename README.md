@@ -43,7 +43,7 @@ svgtojs(options)
 //}
 ```
 
-## Extensions
+## Using custom outputs
 
 You can add custom outputs by providing the correct array of extensions. Each configuration is composed by these keys:
 

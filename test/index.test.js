@@ -59,7 +59,7 @@ describe('svg-to-js', () => {
 })
 
 describe('Config: customOutputs', () => {
-  const extensions = [{
+  const customOutputs = [{
     parser ({ camelCase, svg }) {
       const path = svg.match(/path[^>]+d="([^"]+)"/)
       return path ? `export const ${camelCase} = "${path[1]}";` : ''
@@ -81,14 +81,14 @@ describe('Config: customOutputs', () => {
   const resultWithCustom = svgtojs({
     input: __dirname,
     banner: BANNER_TEXT,
-    extensions
+    customOutputs
   })
 
-  it('no extensions creates no custom entries', () => {
+  it('no customOutputs creates no custom entries', () => {
     expect(Object.keys(result).some(key => key.startsWith('custom_'))).toBe(false)
   })
 
-  it('extensions should create new results', () => {
+  it('customOutputs should create new results', () => {
     expect(resultWithCustom.custom_1.split('\n').length).toBe(4)
     expect(resultWithCustom.custom_1.split('\n').length).toBe(4)
   })
@@ -98,14 +98,14 @@ describe('Config: customOutputs', () => {
     expect(resultWithCustom.custom_2.includes(BANNER_TEXT)).toBe(true)
   })
 
-  it('incomplete extensions should not be counted', () => {
+  it('incomplete customOutputs should not be counted', () => {
     const customEntries = Object.keys(resultWithCustom).filter(key => key.startsWith('custom_'))
-    const validExtensions = extensions.filter(item => item.filename && item.parser)
-    expect(customEntries.length).toBe(validExtensions.length)
+    const validcustomOutputs = customOutputs.filter(item => item.filename && item.parser)
+    expect(customEntries.length).toBe(validcustomOutputs.length)
   })
 
   it('includeBanners works as expected', () => {
-    const bannerExtensions = [{
+    const bannerCustomOutputs = [{
       includeBanner: false,
       parser () { return '' },
       filename: 'test_3'
@@ -121,11 +121,11 @@ describe('Config: customOutputs', () => {
     const withBannerResult = svgtojs({
       input: __dirname,
       banner: BANNER_TEXT,
-      extensions: bannerExtensions
+      customOutputs: bannerCustomOutputs
     })
     const noBannerResult = svgtojs({
       input: __dirname,
-      extensions: bannerExtensions
+      customOutputs: bannerCustomOutputs
     })
 
     expect(withBannerResult.custom_1.includes(BANNER_TEXT)).toBe(false)

@@ -68,7 +68,9 @@ describe('Config: customOutputs', () => {
   }, {
     includeBanner: true,
     parser ({ camelCase, svg, titleCase }) {
-      return `exports.${camelCase} = {render() { return (${svg.replace('<svg', `<svg id="${titleCase}"`)});}}
+      return `exports.${camelCase} = {render() { 
+        return (${svg.replace('<svg', `<svg id="${titleCase}"`)});
+      }}
       `.trim()
     },
     filename: 'test_2'
@@ -90,7 +92,7 @@ describe('Config: customOutputs', () => {
 
   it('customOutputs should create new results', () => {
     expect(resultWithCustom.custom_1.split('\n').length).toBe(4)
-    expect(resultWithCustom.custom_1.split('\n').length).toBe(4)
+    expect(resultWithCustom.custom_2.split('\n').length).toBe(10)
   })
 
   it('banners should be included when it is explicit', () => {

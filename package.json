@@ -28,6 +28,7 @@
     "publish:minor": "npm version minor -m 'Release minor %s'",
     "publish:major": "npm version major -m 'Release major %s'",
     "postversion": "npm run build && git push && git push --tags && npm publish --access public",
+    "standard:fix": "standard --fix",
     "build": "rollup --config",
     "test": "npm run build && jest && standard -v"
   },
@@ -46,7 +47,9 @@
     "globals": [
       "describe",
       "expect",
-      "it"
+      "it",
+      "beforeAll",
+      "afterAll"
     ]
   }
 }

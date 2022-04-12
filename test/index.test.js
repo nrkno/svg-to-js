@@ -1,3 +1,4 @@
+const fs = require('fs')
 const svgtojs = require('../lib/svg-to-js.cjs.js')
 
 const BANNER_TEXT = 'Copyright'
@@ -8,6 +9,22 @@ const BLUEPRINT = `/*!${BANNER_TEXT}*/
 const result = svgtojs({
   banner: BANNER_TEXT,
   input: __dirname
+})
+
+const cleanUpGeneratedFiles = () => {
+  if (fs.existsSync('test_1')) fs.rmSync('test_1')
+  if (fs.existsSync('test_2')) fs.rmSync('test_2')
+  if (fs.existsSync('test_3')) fs.rmSync('test_3')
+  if (fs.existsSync('test_4')) fs.rmSync('test_4')
+  if (fs.existsSync('test_5')) fs.rmSync('test_5')
+}
+
+beforeAll(() => {
+  cleanUpGeneratedFiles()
+})
+
+afterAll(() => {
+  cleanUpGeneratedFiles()
 })
 
 describe('svg-to-js', () => {

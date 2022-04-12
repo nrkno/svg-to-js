@@ -45,25 +45,25 @@ svgtojs(options)
 
 ## Using custom outputs
 
-You can add custom outputs by providing the correct array of extensions. Each configuration is composed by these keys:
+You can add custom outputs by providing the correct array of `customOutputs`. Each configuration is composed by these keys:
 
 * required `parser`
 * required `filename`
 * optional `includeBanner` 
 
 Use `parser` as a callback to transform the contents of every svg on your list. 
-This functions provides a icon config object including `camelCase` name of file, `svg` contents, `symbol` string and `jsx` string.
+This functions provides an icon config object including `camelCase` name of file, `svg` contents, `symbol` string and `jsx` string.
 
 Use `filename` to provide the output filename.
 
 Use `includeBanner` as boolean to include banner on top of your output file.
 
-### Usage with extensions
+### Usage with custom outputs
 
 ```js
 import svgtojs from '@nrk/svg-to-js'
 
-const extensions = [{
+const customOutputs = [{
   includeBanner: true,
   parser({ camelCase, svg }) {
     return `exports.${camelCase} = {render() { return (${svg});}}`    
@@ -74,7 +74,7 @@ const extensions = [{
 const options = {
   banner: '/** Copyright NRK **/',
   input: __dirname,
-  extensions: extensions
+  customOutputs: customOutputs
 }
 
 svgtojs(options)

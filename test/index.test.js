@@ -1,3 +1,4 @@
+const fs = require('fs')
 const svgtojs = require('../lib/svg-to-js.cjs.js')
 
 const BANNER_TEXT = 'Copyright'
@@ -8,6 +9,22 @@ const BLUEPRINT = `/*!${BANNER_TEXT}*/
 const result = svgtojs({
   banner: BANNER_TEXT,
   input: __dirname
+})
+
+const cleanUpGeneratedFiles = () => {
+  if (fs.existsSync('test_1')) fs.rmSync('test_1')
+  if (fs.existsSync('test_2')) fs.rmSync('test_2')
+  if (fs.existsSync('test_3')) fs.rmSync('test_3')
+  if (fs.existsSync('test_4')) fs.rmSync('test_4')
+  if (fs.existsSync('test_5')) fs.rmSync('test_5')
+}
+
+beforeAll(() => {
+  cleanUpGeneratedFiles()
+})
+
+afterAll(() => {
+  cleanUpGeneratedFiles()
 })
 
 describe('svg-to-js', () => {
@@ -55,5 +72,87 @@ describe('svg-to-js', () => {
 
   it('jsx should be ES5 compatible', () => {
     expect(result.cjsx).not.toMatch(/(const|let)\s?=/)
+  })
+})
+
+describe('Config: customOutputs', () => {
+  const customOutputs = [{
+    parser ({ camelCase, svg }) {
+      const path = svg.match(/path[^>]+d="([^"]+)"/)
+      return path ? `export const ${camelCase} = "${path[1]}";` : ''
+    },
+    filename: 'test_1'
+  }, {
+    includeBanner: true,
+    parser ({ camelCase, svg, titleCase }) {
+      return `exports.${camelCase} = {render() { 
+        return (${svg.replace('<svg', `<svg id="${titleCase}"`)});
+      }}
+      `.trim()
+    },
+    filename: 'test_2'
+  }, {
+    parser () {
+      return ''
+    }
+  }]
+
+  const resultWithCustom = svgtojs({
+    input: __dirname,
+    banner: BANNER_TEXT,
+    customOutputs
+  })
+
+  it('no customOutputs creates no custom entries', () => {
+    expect(Object.keys(result).some(key => key.startsWith('custom_'))).toBe(false)
+  })
+
+  it('customOutputs should create new results', () => {
+    expect(resultWithCustom.custom_1.split('\n').length).toBe(4)
+    expect(resultWithCustom.custom_2.split('\n').length).toBe(10)
+  })
+
+  it('banners should be included when it is explicit', () => {
+    expect(resultWithCustom.custom_1.includes(BANNER_TEXT)).toBe(false)
+    expect(resultWithCustom.custom_2.includes(BANNER_TEXT)).toBe(true)
+  })
+
+  it('incomplete customOutputs should not be counted', () => {
+    const customEntries = Object.keys(resultWithCustom).filter(key => key.startsWith('custom_'))
+    const validcustomOutputs = customOutputs.filter(item => item.filename && item.parser)
+    expect(customEntries.length).toBe(validcustomOutputs.length)
+  })
+
+  it('includeBanners works as expected', () => {
+    const bannerCustomOutputs = [{
+      includeBanner: false,
+      parser () { return '' },
+      filename: 'test_3'
+    }, {
+      includeBanner: true,
+      parser () { return '' },
+      filename: 'test_4'
+    }, {
+      parser () { return '' },
+      filename: 'test_5'
+    }]
+
+    const withBannerResult = svgtojs({
+      input: __dirname,
+      banner: BANNER_TEXT,
+      customOutputs: bannerCustomOutputs
+    })
+    const noBannerResult = svgtojs({
+      input: __dirname,
+      customOutputs: bannerCustomOutputs
+    })
+
+    expect(withBannerResult.custom_1.includes(BANNER_TEXT)).toBe(false)
+    expect(withBannerResult.custom_2.includes(BANNER_TEXT)).toBe(true)
+    expect(withBannerResult.custom_3.includes(BANNER_TEXT)).toBe(false)
+
+    expect(noBannerResult.custom_1.includes(BANNER_TEXT)).toBe(false)
+    expect(noBannerResult.custom_2.includes(BANNER_TEXT)).toBe(false)
+    expect(noBannerResult.custom_3.includes(BANNER_TEXT)).toBe(false)
   })
 })

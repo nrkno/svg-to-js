@@ -4,3 +4,4 @@
 /npm-debug*
 /yarn-error*
 lib/svg-to-js*
+test_*

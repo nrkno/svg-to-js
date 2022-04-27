@@ -16,9 +16,9 @@ npm install @nrk/svg-to-js
 import svgtojs from '@nrk/svg-to-js'
 
 const options = {
-  input: 'src/',               // Required. Folder with SVG files
-  banner: 'Copyright NRK',    // Optional. Text to add as comment in top of file
-  scale: 1,                   // Optional. Scale factor for width/height attributes in em
+  input: 'src/',                      // Required. Folder with SVG files
+  banner: 'Made with @nrk/svg-to-js', // Optional. Text to add as comment in top of file
+  scale: 1,                           // Optional. Scale factor for width/height attributes in em
 
   // svgtojs always returns Object of outputs,
   // but can optionally also write files:

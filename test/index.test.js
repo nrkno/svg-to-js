@@ -59,6 +59,20 @@ describe('svg-to-js', () => {
   it('jsx should be ES5 compatible', () => {
     expect(result.cjsx).not.toMatch(/(const|let)\s?=/)
   })
+
+  it('should keep all presentation attributes from svg-tag on symbol for iife', () => {
+    document.body.innerHTML = result.iife
+    expect(document.querySelector('symbol#nrk-download').attributes.fill.value).toBe('currentColor')
+  })
+
+  it('should keep presentation attributes from svg-tag on svg for cjs', () => {
+    expect(result.cjs.indexOf('<svg viewBox="0 0 24 24" class="nrk-download" width="24.000em" height="24.000em" fill="currentColor" aria-hidden="true" focusable="false">') > 0).toBe(true)
+  })
+
+  it('should keep presentation attributes from svg-tag as part of attributes-object for cjsx', () => {
+    const nrkDownloadExport = result.cjsx.split('exports.').filter(v => v.startsWith('NrkDownload'))[0]
+    expect(nrkDownloadExport.indexOf("fill: 'currentColor'") > 0).toBe(true)
+  })
 })
 
 describe('Config: customOutputs', () => {

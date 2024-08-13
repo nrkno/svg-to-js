@@ -40,7 +40,7 @@
     "jest-environment-jsdom": "28.0.2",
     "jsdom": "20.0.0",
     "rollup": "2.70.2",
-    "standard": "17.0.0"
+    "standard": "17.1.0"
   },
   "jest": {
     "testEnvironment": "jsdom"
